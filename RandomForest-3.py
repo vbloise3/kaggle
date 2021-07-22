@@ -69,7 +69,13 @@ step_1.solution()
 
 # Run the code to save predictions in the format used for competition scoring
 
-output = pd.DataFrame({'Id': test_data.Id,
-                       'SalePrice': test_preds})
-output.to_csv('submission2.csv', index=False)
+model = RandomForestRegressor(n_estimators=100, random_state=0)
+model.fit(OH_X_train, y_train)
+
+# Fill in the line below: get test predictions
+preds = model.predict(OH_X_valid)
+# Save test predictions to file
+output = pd.DataFrame({'Id': OH_X_valid.index,
+                       'SalePrice': preds})
+output.to_csv('submission.csv', index=False)
 
