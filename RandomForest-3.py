@@ -73,6 +73,7 @@ model = RandomForestRegressor(n_estimators=100, random_state=0)
 model.fit(OH_X_train, y_train)
 
 # Fill in the line below: get test predictions
+# try to use rf_model_on_full_data and test_preds instead
 preds = model.predict(OH_X_valid)
 # Save test predictions to file
 output = pd.DataFrame({'Id': OH_X_valid.index,
