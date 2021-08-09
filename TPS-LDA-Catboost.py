@@ -127,7 +127,7 @@ print("\033[93mTraining........")
 kf = StratifiedKFold(n_splits = 15 , shuffle = True , random_state = 42)
 for fold, (tr_index , val_index) in enumerate(kf.split(x.values , y.values)):
     
-    print("⁙" * 10)
+    print("⁙" * 15)
     print(f"Fold {fold + 1}")
     
     x_train,x_val = x.values[tr_index] , x.values[val_index]
@@ -151,7 +151,7 @@ for fold, (tr_index , val_index) in enumerate(kf.split(x.values , y.values)):
 print("-" * 50)
 print("\033[95mTraining Done")
 
-test_preds /= 10
+test_preds /= 15
 
 # Preparing Submission
 submission = pd.read_csv("../input/tabular-playground-series-aug-2021/sample_submission.csv")
