@@ -24,6 +24,8 @@ test=pd.read_csv("../input/tabular-playground-series-aug-2021/test.csv")
 
 train.head()
 
+# make sure there are no null values
+# if there are nulls, impute them 
 train.isnull().sum()
 
 y = train['loss']
@@ -62,6 +64,7 @@ test[features] = scaler.transform(test[features])
 
 x = train
 
+# show variance of components
 lda = LDA(n_components=42, solver='svd')
 X_lda = lda.fit_transform(x, y)
 
@@ -99,7 +102,7 @@ def objective(trial,data=x,target=y):
     
     return loss
 
-# use optima
+# use optima to get best parameters
 OPTUNA_OPTIMIZATION = True
 
 study = optuna.create_study(direction='minimize')
@@ -112,7 +115,7 @@ if OPTUNA_OPTIMIZATION:
     display(optuna.visualization.plot_slice(study))
     display(optuna.visualization.plot_parallel_coordinate(study))
 
-# Training
+# Training using kfold
 cat_params = study.best_trial.params
 cat_params['loss_function'] = 'RMSE'
 cat_params['eval_metric'] = 'RMSE'
