@@ -4,7 +4,8 @@ import random
 
 testList = {0: "find missing number in an array of ints from 1-n",
 1: "find duplicates in a list of Numbers",
-2: "find the largest and smallest number in an unsorted integer array"}
+2: "find the largest and smallest number in an unsorted integer array",
+3: "find all pairs of an integer array whose sum is equal to a given number"}
 
 tests = defaultdict(int)
 
@@ -67,7 +68,7 @@ def printLL(list):
 
 def getTest(input):
     random_Number = random.randint(0,input)
-    print("random number: ", random_Number)
+    #print("random number: ", random_Number)
     tests[random_Number] += 1
     if tests[random_Number] < 2:
         return(testList[random_Number])
@@ -86,5 +87,5 @@ def get_random_test_list(theList):
 if __name__ == "__main__":
     arguments = sys.argv[1]
     input = list(map(int, arguments.split(",")))
-    input = [2]
+    #input = [2]
     print(get_random_test_list(input))

@@ -1,27 +1,27 @@
 import sys
 
-def get_largest_smallest(theList):
+def find_largest_smallest(theList):
     largest = theList[0]
     smallest = theList[0]
-    largest2 = None
-    smallest2 = None
-    for item in theList[1:]:
+    secondLargest = None
+    secondSmallest = None
+    for item in theList:
         if item > largest:
-            largest2 = largest
+            secondLargest = largest
             largest = item
-        elif largest2 == None or largest2 < item:
-            largest2 = item
+        elif secondLargest == None or item > secondLargest:
+            secondLargest = item
         if item < smallest:
-            smallest2 = smallest
+            secondSmallest = smallest
             smallest = item
-        elif smallest2 == None or smallest2 > item:
-            smallest2 = item
+        elif secondSmallest == None or secondSmallest > item:
+            secondSmallest = item
     print("largest: ", largest)
-    print("second largest: ", largest2)
+    print("second largest: ", secondLargest)
     print("smallest: ", smallest)
-    print("second smallest: ", smallest2)
+    print("second smallest: ", secondSmallest)
 
 if __name__ == "__main__":
     arguments = sys.argv[1]
     input = list(map(int, arguments.split(",")))
-    get_largest_smallest(input)
+    find_largest_smallest(input)
