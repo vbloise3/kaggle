@@ -5,7 +5,8 @@ import random
 testList = {0: "find missing number in an array of ints from 1-n",
 1: "find duplicates in a list of Numbers",
 2: "find the largest and smallest number in an unsorted integer array",
-3: "find all pairs of an integer array whose sum is equal to a given number"}
+3: "find all pairs of an integer array whose sum is equal to a given number",
+4: "Remove duplicates from a given array"}
 
 tests = defaultdict(int)
 

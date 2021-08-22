@@ -1,6 +1,7 @@
+# find the largest and smallest number in an unsorted integer array
 import sys
 
-def find_largest_smallest(theList):
+def largest_smallest(theList):
     largest = theList[0]
     smallest = theList[0]
     secondLargest = None
@@ -9,7 +10,7 @@ def find_largest_smallest(theList):
         if item > largest:
             secondLargest = largest
             largest = item
-        elif secondLargest == None or item > secondLargest:
+        elif secondLargest == None or secondLargest < item:
             secondLargest = item
         if item < smallest:
             secondSmallest = smallest
@@ -19,9 +20,9 @@ def find_largest_smallest(theList):
     print("largest: ", largest)
     print("second largest: ", secondLargest)
     print("smallest: ", smallest)
-    print("second smallest: ", secondSmallest)
+    print("second smallest ", secondSmallest)
 
 if __name__ == "__main__":
     arguments = sys.argv[1]
     input = list(map(int, arguments.split(",")))
-    find_largest_smallest(input)
+    largest_smallest(input)

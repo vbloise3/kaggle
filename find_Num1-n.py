@@ -1,17 +1,19 @@
+# find missing number in an array of ints from 1-n
 import sys
-from collections import defaultdict
 
-def find_missing_number(theList):
-    my_dict = defaultdict(int)
+def find_missing(theList):
+    found = set()
+    _size = len(theList)
     for item in theList:
-        my_dict[item] += 1
+        found.add(item)
     j = 1
-    while j < len(theList):
-        if j not in my_dict:
+    while j < _size:
+        if j not in found:
             return j
         j += 1
+    return -1
 
 if __name__ == "__main__":
     arguments = sys.argv[1]
-    input = list(map(int,arguments.split(",")))
-    print(find_missing_number(input))
+    input = list(map(int, arguments.split(",")))
+    print(find_missing(input))
