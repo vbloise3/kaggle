@@ -1,5 +1,5 @@
 import sys
-class Sequencer:
+class Sequencer(object):
     def __init__(self, theList = [1,2,3,4,5,7,8,9,45,6]):
         self.theList = theList
     def get_longest(self):
