@@ -1,6 +1,6 @@
 import sys
 class Sorter(object):
-    def __init__(self, theList = [1,4,3,7,5,6,8,9,12,34,56,2]):
+    def __init__(self, theList = [1,2,3,5,6,7,8,3,5]):
         self.theList = theList
     def quicksort_in_place(self):
         if len(self.theList) == 0:
@@ -10,10 +10,7 @@ class Sorter(object):
     def quicksort(self, low, high):
         i = low
         j = high
-        # find pivot
         pivot = self.theList[low + (high - low) // 2]
-        # move elements less than pivot before and
-        # elements higher than pivot after pivot
         while i < j:
             while self.theList[i] < pivot:
                 i += 1
@@ -23,7 +20,6 @@ class Sorter(object):
                 self.swap(i, j)
                 i += 1
                 j -= 1
-            # recursively appply quicksort
             if low < j:
                 self.quicksort(low, j)
             if i < high:
