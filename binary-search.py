@@ -29,7 +29,10 @@ if __name__ == "__main__":
         arguments = sys.argv[1]
         input = list(map(int, arguments.split(",")))
         value = int(sys.argv[2])
-        my_sorter = Sorter(input, value)
+        sorted_input = sorted(input)
+        my_sorter = Sorter(sorted_input, value)
+        position = my_sorter.search()
+        print(input.index(sorted_input[position]))
     else:
         my_sorter = Sorter()
-    print(my_sorter.search())
+        print(my_sorter.search())
