@@ -11,7 +11,11 @@ testList = {0: "find missing number in an array of ints from 1-n",
 6: "find longest sequence",
 7: "Search rotated array",
 8: "Quicksort in place",
-9: "Remove duplicates from an array in place"}
+9: "Remove duplicates from an array in place",
+10: "Reverse array in place",
+11: "Remove dups without using collections library",
+12: "Convert byte array to string",
+13: "Difference between array and linked list"}
 
 tests = defaultdict(int)
 
