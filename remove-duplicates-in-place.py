@@ -4,7 +4,7 @@ class Duplicates(object):
     def __init__(self, theList = [1,4,2,7,6,4,7,8,9,20]):
         self.theList = theList
     def remove_in_place(self):
-        self.theList = sorted(self.theList)
+        self.theList.sort()
         for i in range(len(self.theList) - 1, 0, -1):
             if self.theList[i] == self.theList[i - 1]:
                 del self.theList[i]
