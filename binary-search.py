@@ -9,7 +9,6 @@ class Sorter(object):
         high = len(self.theList) - 1
         return self.binary_search(self.theList, low, high, self.value)
     def binary_search(self, _list, low, high, x):
-        # sorted_list = sorted(_list)
         if high >= low:
             mid = (high + low) // 2
             if _list[mid] == x:

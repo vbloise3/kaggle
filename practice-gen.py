@@ -16,7 +16,12 @@ testList = {0: "find missing number in an array of ints from 1-n",
 11: "Remove dups without using collections library",
 12: "Convert byte array to string",
 13: "Difference between array and linked list",
-14: "Binary search"}
+14: "Binary search",
+15: "Find median of two arrays",
+16: "Rotate an array left and right by a given number",
+17: "Find duplicates from an unsorted array",
+18: "Given an array of integers sorted in ascending order, find the starting and ending position of a given value",
+19: "Given an integer array, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum"}
 
 tests = defaultdict(int)
 
