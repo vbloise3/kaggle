@@ -7,7 +7,7 @@ def find_missing(theList):
     for item in theList:
         found.add(item)
     j = 1
-    while j < _size:
+    while j <= _size:
         if j not in found:
             return j
         j += 1
