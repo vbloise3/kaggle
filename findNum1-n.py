@@ -1,17 +1,16 @@
 import sys
 class Finder(object):
-    def __init__(self, theList = [1,2,4,5,6,7,8,9]):
+    def __init__(self, theList = [-25,1,2,4,5,6,7,8,9]):
         self.theList = theList
     def find_missing_number(self):
         _size = len(self.theList)
         found = set()
+        self.theList.sort()
         for item in self.theList:
             found.add(item)
-        j = 1
-        while j <= _size:
+        for j in range(min(self.theList), max(self.theList)):
             if j not in found:
                 return j
-            j += 1
         return -1
 
 if __name__ == "__main__":

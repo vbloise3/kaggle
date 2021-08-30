@@ -5,13 +5,12 @@ class Finder(object):
     def find_missing_number(self):
         _size = len(self.theList)
         found = set()
+        self.theList.sort()
         for item in self.theList:
             found.add(item)
-        j = 1
-        while j <= _size:
+        for j in range(min(self.theList), _size + 1):
             if j not in found:
                 return j
-            j += 1
         return -1
 
 if __name__ == "__main__":
