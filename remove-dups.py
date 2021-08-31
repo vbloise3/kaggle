@@ -1,20 +1,21 @@
-# remove dups from array of ints
 import sys
-
-def find_dups(theList):
-    _size = len(theList)
-    duplicates = set()
-    non_duplicates = set()
-    for i in range(_size):
-        k = i + 1
-        for j in range(k, _size):
-            if theList[i] == theList[j]:
-                duplicates.add(theList[j])
-            else:
-                non_duplicates.add(theList[j])
-    return(sorted(duplicates.union(non_duplicates)))
+class Finder(object):
+    def __init__(self, theList = [1,2,3,4,2,6,4,8,5,6,78,1,3,6,78]):
+        self.theList = theList
+    def remove_dups(self):
+        self.theList.sort()
+        duplicates = set()
+        _size = len(self.theList)
+        for j in range(_size - 1, 0, -1):
+            if self.theList[j] == self.theList[j - 1]:
+                #del self.theList[j]
+                duplicates.add(self.theList[j])
+        return list(duplicates)
 
 if __name__ == "__main__":
-    arguments = sys.argv[1]
-    input = list(map(int, arguments.split(",")))
-    print(find_dups(input))
+    if len(sys.argv) > 1:
+        input = list(map(int, sys.argv[1].split(",")))
+        my_finder = Finder(input)
+    else:
+        my_finder = Finder()
+    print (my_finder.remove_dups())

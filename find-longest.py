@@ -1,20 +1,23 @@
 import sys
-class Sequencer(object):
-    def __init__(self, theList = [1,2,3,4,5,7,8,9,45,6]):
+class Finder(object):
+    def __init__(self, theList = [1,2,3,4,5,8,9,10,11,12,6,7,-1,-2,-3,-4,-5]):
         self.theList = theList
-    def get_longest(self):
-        longest_streak = 0
-        for num in self.theList:
-            current_num = num
-            current_streak = 1
+
+    def get_longest_sequence(self):
+        longest_sequence = 0
+        for item in self.theList:
+            current_sequence = 1
+            current_num = item
             while current_num + 1 in self.theList:
+                current_sequence += 1
                 current_num += 1
-                current_streak += 1
-            longest_streak = max(longest_streak, current_streak)
-        return longest_streak
+            longest_sequence = max(current_sequence, longest_sequence)
+        return longest_sequence
 
 if __name__ == "__main__":
-    arguments = sys.argv[1]
-    input = list(map(int, arguments.split(",")))
-    my_sequencer = Sequencer(input)
-    print(my_sequencer.get_longest())
+    if len(sys.argv) > 1:
+        input = list(map(int, sys.argv[1].split(",")))
+        my_finder = Finder(input)
+    else:
+        my_finder = Finder()
+    print(my_finder.get_longest_sequence())
