@@ -16,6 +16,7 @@ class Dupremover(object):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         arguments = sys.argv[1]
+        # change list/map from int to str for string input
         input = list(map(int, arguments.split(",")))
         my_dup_remover = Dupremover(input)
     else:
