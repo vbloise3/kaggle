@@ -1,27 +1,32 @@
 import sys
-
-def find_target(theList, target):
-    low = 0
-    high = len(theList)
-    while low < high:
-        mid = low + (high - low) // 2
-        if target == theList[mid]:
-            return mid
-        if theList[low] < theList[mid]:
-            if target >= theList[low] and target < theList[mid]:
-                high = mid
+class Finder(object):
+    def __init__(self, theList = [5,6,7,8,9,10,11,0,1,2,3,4], value = 0):
+        self.theList = theList
+        self.value = value
+    def search_rotated(self):
+        low = 0
+        high = len(self.theList)
+        while low < high:
+            mid = low + (high - low) // 2
+            if self.theList[mid] == self.value:
+                return mid
+            if self.theList[low] <= self.theList[mid]:
+                if self.value >= self.theList[low] and self.value < self.theList[mid]:
+                    high = mid
+                else:
+                    low = mid + 1
             else:
-                low = mid + 1
-        else:
-            if target <= theList[high - 1] and target > theList[mid]:
-                low = mid + 1
-            else:
-                high = mid
-    return -1
+                if self.value >= self.theList[mid] and self.value < self.theList[high - 1]:
+                    low = mid + 1
+                else:
+                    high = mid
+        return -1
 
 if __name__ == "__main__":
-    arguments_list = sys.argv[1]
-    arguments_target = sys.argv[2]
-    input = list(map(int, arguments_list.split(",")))
-    target = int(arguments_target)
-    print(find_target(input, target))
+    if len(sys.argv) > 2:
+        input = list(map(int, sys.argv[1].split(",")))
+        value = int(sys.argv[2])
+        my_finder = Finder(input, value)
+    else:
+        my_finder = Finder()
+    print(my_finder.search_rotated())
