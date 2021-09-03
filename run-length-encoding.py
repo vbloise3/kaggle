@@ -2,16 +2,30 @@
 import sys
 from collections import defaultdict
 class Encoder(object):
-    def __init__(self, theString = 'aaabbccc'):
+    def __init__(self, theString = 'aaabbccca'):
         self.theString = theString
     def encode(self):
-        my_dict = defaultdict(int)
-        result = ''
+        result = []
+        result_string = ''
+        string_list = []
+        character = ''
+        multiplier = 0
         for element in self.theString:
-            my_dict[element] += 1
-        for key in my_dict:
-            result += key + str(my_dict[key])
-        return result
+            string_list.append(element)
+        i = len(string_list) - 1
+        while i > 0:
+            character = string_list[i]
+            multiplier = 1
+            while string_list[i - 1] == character:
+                multiplier += 1
+                i -= 1
+            interim_result = str(multiplier) + character
+            result.append(interim_result)
+            multiplier = 0
+            i -= 1
+        for element in reversed(result):
+            result_string += element 
+        return result_string
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

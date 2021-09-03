@@ -1,7 +1,7 @@
 # 2a3b1c -> aabbbc
 import sys
 class Decoder(object):
-    def __init__(self, theString = '2a3b1c'):
+    def __init__(self, theString = '4a3b1c'):
         self.theString = theString
     def decode(self):
         string_list = []
@@ -17,13 +17,12 @@ class Decoder(object):
             if string_list[j] not in numbers:
                 character = string_list[j]
             else:
-                multiplier += string_list[j]
+                multiplier = string_list[j]
                 if string_list[j - 1] in numbers:
-                    multiplier += string_list[j]
+                    multiplier = string_list[j-1] + multiplier
                 else:
                     interim_result = multiplier + character
                     multiplier = ''
-            #result += interim_result
             if interim_result != '':
                 reverse.append(interim_result)
             interim_result = ''
@@ -38,7 +37,7 @@ class Decoder(object):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         input = str(sys.argv[1])
-        #input = '2a3b1c'
+        #input = '2a3b11c'
         my_decoder = Decoder(input)
     else:
         my_decoder = Decoder()

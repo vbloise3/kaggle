@@ -1,18 +1,17 @@
 import sys
 class Finder(object):
-    def __init__(self, theList = [1,2,3,4,5,8,9,10,11,12,6,7,-1,-2,-3,-4,-5]):
+    def __init__(self, theList = [1,2,3,5,6,7,8,-1,-2,-3,0]):
         self.theList = theList
-
-    def get_longest_sequence(self):
-        longest_sequence = 0
-        for item in self.theList:
-            current_sequence = 1
-            current_num = item
+    def longest_streak(self):
+        longest = 0
+        for num in self.theList:
+            current_streak = 1
+            current_num = num
             while current_num + 1 in self.theList:
-                current_sequence += 1
                 current_num += 1
-            longest_sequence = max(current_sequence, longest_sequence)
-        return longest_sequence
+                current_streak += 1
+            longest = max(longest, current_streak)
+        return longest
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -20,4 +19,4 @@ if __name__ == "__main__":
         my_finder = Finder(input)
     else:
         my_finder = Finder()
-    print(my_finder.get_longest_sequence())
+    print(my_finder.longest_streak())

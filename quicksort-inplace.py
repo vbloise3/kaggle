@@ -1,25 +1,25 @@
 import sys
 class Sorter(object):
-    def __init__(self, theList = [1,2,3,5,6,7,8,3,5]):
+    def __init__(self, theList = [4,3,6,2,7,5,9,8,2]):
         self.theList = theList
     def quicksort_in_place(self):
-        if len(self.theList) == 0:
-            return
         self.quicksort(0, len(self.theList) - 1)
         return self.theList
     def quicksort(self, low, high):
         i = low
         j = high
         pivot = self.theList[low + (high - low) // 2]
+        # reorder around the pivot
         while i < j:
             while self.theList[i] < pivot:
                 i += 1
             while self.theList[j] > pivot:
                 j -= 1
             if i <= j:
-                self.swap(i, j)
+                self.swap(i,j)
                 i += 1
                 j -= 1
+        # recursively apply reorder
             if low < j:
                 self.quicksort(low, j)
             if i < high:
@@ -31,8 +31,7 @@ class Sorter(object):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        arguments = sys.argv[1]
-        input = list(map(int, arguments.split(",")))
+        input = list(map(int, sys.argv[1].split(",")))
         my_sorter = Sorter(input)
     else:
         my_sorter = Sorter()
