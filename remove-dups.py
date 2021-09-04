@@ -8,9 +8,9 @@ class Finder(object):
         _size = len(self.theList)
         for j in range(_size - 1, 0, -1):
             if self.theList[j] == self.theList[j - 1]:
-                #del self.theList[j]
-                duplicates.add(self.theList[j])
-        return list(duplicates)
+                del self.theList[j]
+                #duplicates.add(self.theList[j])
+        return self.theList #list(duplicates)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
