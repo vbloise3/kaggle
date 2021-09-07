@@ -1,6 +1,6 @@
 import sys
 class Rotater(object):
-    def __init__(self, theList = [1,2,3,4,5,6,7,8,9,0,-1,-2,-3,-4], theValue = 3):
+    def __init__(self, theList = [1,2,3,4,5,6,7,8,9,0], theValue = 3):
         self.theListL = theList.copy()
         self.theListR = theList.copy()
         self.theValue = theValue
