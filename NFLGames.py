@@ -133,14 +133,16 @@ class NFL(object):
             # Create DataFrame from our scraped data
             data = pd.DataFrame(team_stats, columns=column_headers)
             # drop empty columns
-            data.replace('', np.nan, inplace=True)
-            data.dropna(how='all', axis=1, inplace=True)
+            #data.replace('', np.nan, inplace=True)
+            #data.dropna(how='all', axis=1, inplace=True)
             # Combine the two rows
             combined_row = ''
             for item in data.iloc[3]:
-                combined_row = combined_row + ',' + str(item)
+                if len(item) > 0:
+                    combined_row = combined_row + ',' + str(item)
             for item in data.iloc[4]:
-                combined_row = combined_row + ',' + str(item)
+                if len(item) > 0:
+                    combined_row = combined_row + ',' + str(item)
             combined_row = combined_row[1:]
             #
             # end get team stats
@@ -158,14 +160,16 @@ class NFL(object):
             # Create DataFrame from our scraped data
             data_conv = pd.DataFrame(team_conv_stats)
             # drop empty columns
-            data_conv.replace('', np.nan, inplace=True)
-            data_conv.dropna(how='all', axis=1, inplace=True)
+            #data_conv.replace('', np.nan, inplace=True)
+            #data_conv.dropna(how='all', axis=1, inplace=True)
             # Combine the two rows
             combined_conv_row = ''
             for item in data_conv.iloc[3]:
-                combined_conv_row = combined_conv_row + ',' + str(item)
+                if len(item) > 0:
+                    combined_conv_row = combined_conv_row + ',' + str(item)
             for item in data_conv.iloc[4]:
-                combined_conv_row = combined_conv_row + ',' + str(item)
+                if len(item) > 0:
+                    combined_conv_row = combined_conv_row + ',' + str(item)
             combined_conv_row = combined_conv_row[1:]
             #
             # end get team conversions
