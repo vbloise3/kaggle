@@ -15,7 +15,8 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 class NFL(object):
-    def __init__(self, theWeek = 2):
+    def __init__(self, theFunction = 'teams', theWeek = 1):
+        self.theFunction = theFunction
         self.theWeek = theWeek
 
     def setup(self):
@@ -63,55 +64,13 @@ class NFL(object):
 
         # dictionary for the teams names and urls
         self.teams = defaultdict(def_value)
+        self.team_names = []
         for i in range(len(self.teams_names)):
             self.teams[self.teams_names[i]] = self.teams_urls[i]
-    def getStatsOld(self):
-        for team in self.teams_urls:
-            current_team = urlopen(team)
-            stats_page = BeautifulSoup(current_team, features="lxml")
-            # Collect table headers
-            column_headers = stats_page.findAll('tr')[1]
-            column_headers = [i.getText() for i in column_headers.findAll('th')]
-            column_headers = column_headers[1:]
-            #print(column_headers)
-            # Get weekly csv files for each team
-            the_table = stats_page.find("table", {"id": "team_stats"})
-            # Collect table rows
-            rows = the_table.findAll('tr')[1:]
-            # Get stats from each row
-            team_stats = []
-            for i in range(len(rows)):
-                team_stats.append([col.getText() for col in rows[i].findAll('td')])
-            # Create DataFrame from our scraped data
-            data = pd.DataFrame(team_stats, columns=column_headers)
-            # Replace time with int time
-            (m, s) = str(data.iloc[1]['Time']).split(':')
-            int_time_home = int(m) * 60 + int(s)
-            data.iloc[1]['Time'] = data.iloc[1]['Time'].replace(data.iloc[1]['Time'], str(int_time_home))
-            (m, s) = str(data.iloc[2]['Time']).split(':')
-            int_time_opponent = int(m) * 60 + int(s)
-            data.iloc[2]['Time'] = data.iloc[2]['Time'].replace(data.iloc[2]['Time'], str(int_time_opponent))
-            # Replace start position by removing Own
-            start_home = data.iloc[1]['Start']
-            start_home = start_home.replace("Own ", "")
-            data.iloc[1]['Start'] = data.iloc[1]['Start'].replace(data.iloc[1]['Start'], start_home)
-            start_opponent = data.iloc[2]['Start']
-            start_opponent = start_opponent.replace("Own ", "")
-            data.iloc[2]['Start'] = data.iloc[2]['Start'].replace(data.iloc[2]['Start'], start_opponent)
-            # Combine the two rows
-            combined_row = ''
-            for item in data.iloc[1]:
-                combined_row = combined_row + ',' + item
-            for item in data.iloc[2]:
-                combined_row = combined_row + ',' + item
-            combined_row = combined_row[1:]
-            # next normalize the data
-            # then write to training files (spread and over/under)
-            with open("week_2_training.csv", "a") as training_file:
-                training_file.write(combined_row + '\n')
-        shutil.move("week_2_training.csv", "../NFL_Model/week_2/week_2_training.csv")
 
     def getStats(self):
+        counter = 1
+        name_counter = 0
         for team in self.teams_urls:
             current_team = urlopen(team)
             stats_page = BeautifulSoup(current_team, features="lxml")
@@ -176,15 +135,76 @@ class NFL(object):
             #
             # next normalize the data
             # then write to training files (spread and over/under)
-            with open("week_2_training.csv", "a") as training_file:
-                training_file.write(combined_row + ',' + combined_conv_row + '\n')
-        shutil.move("week_2_training.csv", "../NFL_Model/week_2/week_2_training.csv")
+            manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
+            file_name = "week_" + str(self.theWeek) + "_training.csv"
+            with open(file_name, "a") as training_file:
+                if counter == 1:
+                    training_file.write(manual_header + '\n')
+                training_file.write(self.teams_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
+            name_counter += 1
+            counter += 1
+        file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_training.csv"
+        shutil.move(file_name, file_path)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
+    if len(sys.argv) == 1:
+        print("Usage: NFLGames.py teams|results week")
+    if len(sys.argv) == 2:
         week = int(sys.argv[1])
-        my_nfl = NFL(week)
+        funct = sys.argv[2]
+        my_nfl = NFL(funct, week)
     else:
         my_nfl = NFL()
     my_nfl.setup()
     my_nfl.getStats()
+
+
+
+
+    """
+    def getStatsOld(self):
+        for team in self.teams_urls:
+            current_team = urlopen(team)
+            stats_page = BeautifulSoup(current_team, features="lxml")
+            # Collect table headers
+            column_headers = stats_page.findAll('tr')[1]
+            column_headers = [i.getText() for i in column_headers.findAll('th')]
+            column_headers = column_headers[1:]
+            #print(column_headers)
+            # Get weekly csv files for each team
+            the_table = stats_page.find("table", {"id": "team_stats"})
+            # Collect table rows
+            rows = the_table.findAll('tr')[1:]
+            # Get stats from each row
+            team_stats = []
+            for i in range(len(rows)):
+                team_stats.append([col.getText() for col in rows[i].findAll('td')])
+            # Create DataFrame from our scraped data
+            data = pd.DataFrame(team_stats, columns=column_headers)
+            # Replace time with int time
+            (m, s) = str(data.iloc[1]['Time']).split(':')
+            int_time_home = int(m) * 60 + int(s)
+            data.iloc[1]['Time'] = data.iloc[1]['Time'].replace(data.iloc[1]['Time'], str(int_time_home))
+            (m, s) = str(data.iloc[2]['Time']).split(':')
+            int_time_opponent = int(m) * 60 + int(s)
+            data.iloc[2]['Time'] = data.iloc[2]['Time'].replace(data.iloc[2]['Time'], str(int_time_opponent))
+            # Replace start position by removing Own
+            start_home = data.iloc[1]['Start']
+            start_home = start_home.replace("Own ", "")
+            data.iloc[1]['Start'] = data.iloc[1]['Start'].replace(data.iloc[1]['Start'], start_home)
+            start_opponent = data.iloc[2]['Start']
+            start_opponent = start_opponent.replace("Own ", "")
+            data.iloc[2]['Start'] = data.iloc[2]['Start'].replace(data.iloc[2]['Start'], start_opponent)
+            # Combine the two rows
+            combined_row = ''
+            for item in data.iloc[1]:
+                combined_row = combined_row + ',' + item
+            for item in data.iloc[2]:
+                combined_row = combined_row + ',' + item
+            combined_row = combined_row[1:]
+            # next normalize the data
+            # then write to training files (spread and over/under)
+            with open("week_2_training.csv", "a") as training_file:
+                training_file.write(combined_row + '\n')
+        shutil.move("week_2_training.csv", "../NFL_Model/week_2/week_2_training.csv")
+    """
