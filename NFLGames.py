@@ -173,7 +173,7 @@ class NFL(object):
         # create the games
         current_week = urlopen(games_url)
         stats_page = BeautifulSoup(current_week, features="lxml")
-        the_table = stats_page.find("table", {"class": "teams"})
+        the_table = stats_page.find("div", {"class": "game_summaries"})
         rows = the_table.findAll('tr')
         game_stats = []
         for i in range(len(rows)):
@@ -182,15 +182,17 @@ class NFL(object):
         data = pd.DataFrame(game_stats)
         # get the away and home team names
         combined_row = ''
-        for item in data.iloc[1]:
-            if len(item) > 0 and "\n" not in item and "\t" not in item:
-                combined_row = combined_row + ',' + str(item)
-        for item in data.iloc[2]:
-            if len(item) > 0 and "\n" not in item and "\t" not in item:
-                combined_row = combined_row + ',' + str(item)
+        home_counter = 0
+        days_of_the_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        for j in range(1, len(data)):
+            for item in data.iloc[j]:
+                if item not in days_of_the_week and item != None and len(item) > 0 and "\n" not in item and "\t" not in item:
+                    combined_row = combined_row + ',' + str(item)
+        combined_row = combined_row[1:]
+        print(combined_row)
 
 if __name__ == "__main__":
-    funct = 'games'
+    funct = ''
     if len(sys.argv) == 1:
         print("Usage: NFLGames.py teams|games|results week")
         my_nfl = NFL()
