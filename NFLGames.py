@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 class NFL(object):
-    def __init__(self, theFunction = 'teams', theWeek = 1):
+    def __init__(self, theFunction = 'games', theWeek = 4):
         self.theFunction = theFunction
         self.theWeek = theWeek
 
@@ -61,6 +61,23 @@ class NFL(object):
         'no_saints', 'atl_falcons',
         'la_rams', 'sf_49ers',
         'az_cards', 'sea_seahawks']
+
+        self.teams_proper_names = ['Miami Dolphins', 'New England Patriots',
+        'Buffalo Bills', 'New York Jets',
+        'Cleveland Browns', 'Baltimore Ravens',
+        'Cincinnati Bengals', 'Pittsburgh Steelers',
+        'Tennessee Titans', 'Houston Texans',
+        'Indianapolis Colts', 'Jacksonville Jaguars',
+        'Denver Broncos', 'Las Vegas Raiders',
+        'Los Angeles Chargers', 'Kansas City Chiefs',
+        'Philadelphia Eagles', 'Washington Football Team',
+        'Dallas Cowboys', 'New York Giants',
+        'Green Bay Packers', 'Chicago Bears',
+        'Minnesota Vikings', 'Detroit Lions',
+        'Tampa Bay Buccaneers', 'Carolina Panthers',
+        'New Orleans Saints', 'Atlanta Falcons',
+        'Los Angeles Rams', 'San Francisco 49ers',
+        'Arizona Cardinals', 'Seattle Seahawks']
 
         # dictionary for the teams names and urls
         self.teams = defaultdict(def_value)
@@ -136,27 +153,59 @@ class NFL(object):
             # next normalize the data
             # then write to training files (spread and over/under)
             manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
-            file_name = "week_" + str(self.theWeek) + "_training.csv"
-            with open(file_name, "a") as training_file:
+            file_name = "week_" + str(self.theWeek) + "_teams.csv"
+            with open(file_name, "a") as teams_file:
                 if counter == 1:
-                    training_file.write(manual_header + '\n')
-                training_file.write(self.teams_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
+                    teams_file.write(manual_header + '\n')
+                teams_file.write(self.teams_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
             name_counter += 1
             counter += 1
-        file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_training.csv"
+        file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_teams.csv"
         shutil.move(file_name, file_path)
+    def createGames(self):
+        read_file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_teams.csv"
+        read_file_name = "week_" + str(self.theWeek) + "_teams.csv"
+        games_url = "https://www.pro-football-reference.com/years/2021/week_" + str(self.theWeek) + ".htm"
+        with open(read_file_path) as teams_file:
+            teams_read = [team.rstrip() for team in teams_file]
+        #for team in teams_read:
+            # 
+        # create the games
+        current_week = urlopen(games_url)
+        stats_page = BeautifulSoup(current_week, features="lxml")
+        the_table = stats_page.find("table", {"class": "teams"})
+        rows = the_table.findAll('tr')
+        game_stats = []
+        for i in range(len(rows)):
+            game_stats.append([col.getText() for col in rows[i].findAll('td')])
+        # Create DataFrame from our scraped data
+        data = pd.DataFrame(game_stats)
+        # get the away and home team names
+        combined_row = ''
+        for item in data.iloc[1]:
+            if len(item) > 0 and "\n" not in item and "\t" not in item:
+                combined_row = combined_row + ',' + str(item)
+        for item in data.iloc[2]:
+            if len(item) > 0 and "\n" not in item and "\t" not in item:
+                combined_row = combined_row + ',' + str(item)
 
 if __name__ == "__main__":
+    funct = 'games'
     if len(sys.argv) == 1:
-        print("Usage: NFLGames.py teams|results week")
-    if len(sys.argv) == 2:
+        print("Usage: NFLGames.py teams|games|results week")
+        my_nfl = NFL()
+    elif len(sys.argv) > 2:
         week = int(sys.argv[1])
         funct = sys.argv[2]
         my_nfl = NFL(funct, week)
     else:
         my_nfl = NFL()
     my_nfl.setup()
-    my_nfl.getStats()
+    if funct == "teams":
+        print("in teams")
+        my_nfl.getStats()
+    elif funct == "games":
+        my_nfl.createGames()
 
 
 
