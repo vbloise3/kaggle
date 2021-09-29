@@ -18,6 +18,7 @@ class NFL(object):
     def __init__(self, theFunction = 'games', theWeek = 4):
         self.theFunction = theFunction
         self.theWeek = theWeek
+        self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
 
     def setup(self):
         def def_value():
@@ -152,12 +153,12 @@ class NFL(object):
             #
             # next normalize the data
             # then write to training files (spread and over/under)
-            manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
+            # self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
             file_name = "week_" + str(self.theWeek) + "_teams.csv"
             with open(file_name, "a") as teams_file:
                 if counter == 1:
                     teams_file.write(manual_header + '\n')
-                teams_file.write(self.teams_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
+                teams_file.write(self.teams_proper_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
             name_counter += 1
             counter += 1
         file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_teams.csv"
@@ -186,13 +187,38 @@ class NFL(object):
         days_of_the_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         for j in range(1, len(data)):
             for item in data.iloc[j]:
-                if item not in days_of_the_week and item != None and len(item) > 0 and "\n" not in item and "\t" not in item:
+                #if item not in days_of_the_week and item != None and len(item) > 0 and "\n" not in item and "\t" not in item:
+                if item in self.teams_proper_names and item != None and len(item) > 0:
                     combined_row = combined_row + ',' + str(item)
         combined_row = combined_row[1:]
-        print(combined_row)
+        #print(combined_row)
+        the_game_opponents = list(map(str, combined_row.split(",")))
+        #print("\nNumber of opponents: ", len(the_game_opponents))
+        # iterate over the_game_opponents, use teams_read rows
+        # and write game rows to week_x_games_spread.csv and week_x_games_O-U.csv
+        team_counter = 1
+        game_row = ''
+        write_row = False
+        games_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_games.csv"
+        for team in the_game_opponents:
+            team_data = [item for item in teams_read if team in item]
+            if team_counter % 2 != 0:
+                game_row = str(team_data)
+                write_row = False
+            else:
+                game_row = game_row + ',' + str(team_data)
+                game_row = game_row.replace("['", "")
+                game_row = game_row.replace("']", "")
+                write_row = True
+            if write_row:
+                with open(games_file_name, "a") as games_file:
+                    if team_counter == 2:
+                        games_file.write(self.manual_header + ',' + self.manual_header + '\n')
+                    games_file.write(game_row + '\n')
+            team_counter += 1
 
 if __name__ == "__main__":
-    funct = ''
+    funct = 'games'
     if len(sys.argv) == 1:
         print("Usage: NFLGames.py teams|games|results week")
         my_nfl = NFL()
