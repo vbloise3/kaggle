@@ -218,6 +218,12 @@ class NFL(object):
                         games_file.write(self.visitor_manual_header + ',' + self.home_manual_header + '\n')
                     games_file.write(game_row + '\n')
             team_counter += 1
+    def gameResults(self):
+        read_file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_games.csv"
+        read_file_name = "week_" + str(self.theWeek) + "_games.csv"
+        games_url = "https://www.pro-football-reference.com/years/2021/week_" + str(self.theWeek) + ".htm"
+        with open(read_file_path) as games_file:
+            games_read = [game.rstrip() for game in games_file]
 
 if __name__ == "__main__":
     funct = 'games'
@@ -232,10 +238,11 @@ if __name__ == "__main__":
         my_nfl = NFL()
     my_nfl.setup()
     if funct == "teams":
-        print("in teams")
         my_nfl.getStats()
     elif funct == "games":
         my_nfl.createGames()
+    elif funct == "results":
+        my_nfl.gameResults()
 
 
 
