@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 class NFL(object):
-    def __init__(self, theFunction = 'games', theWeek = 4):
+    def __init__(self, theFunction = 'games', theWeek = 3):
         self.theFunction = theFunction
         self.theWeek = theWeek
         self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
@@ -159,7 +159,7 @@ class NFL(object):
             file_name = "week_" + str(self.theWeek) + "_teams.csv"
             with open(file_name, "a") as teams_file:
                 if counter == 1:
-                    teams_file.write(manual_header + '\n')
+                    teams_file.write(self.manual_header + '\n')
                 teams_file.write(self.teams_proper_names[name_counter] + ',' + combined_row + ',' + combined_conv_row + '\n')
             name_counter += 1
             counter += 1
@@ -224,9 +224,72 @@ class NFL(object):
         games_url = "https://www.pro-football-reference.com/years/2021/week_" + str(self.theWeek) + ".htm"
         with open(read_file_path) as games_file:
             games_read = [game.rstrip() for game in games_file]
+        # create the games
+        current_week = urlopen(games_url)
+        stats_page = BeautifulSoup(current_week, features="lxml")
+        the_table = stats_page.find("div", {"class": "game_summaries"})
+        rows = the_table.findAll('tr')
+        game_results = []
+        for i in range(len(rows)):
+            game_results.append([col.getText() for col in rows[i].findAll('td')])
+        # Create DataFrame from our scraped data
+        data = pd.DataFrame(game_results)
+        # get the team scores
+        combined_row = ''
+        home_counter = 0
+        divider = ';'
+        games_data = []
+        individual_game = []
+        # try placing game results in nested list game[[home team name:score][visitor team name:score]] versus separating via ';' and ','
+        for j in range(1, len(data)):
+            for item in data.iloc[j]:
+                if item in self.teams_proper_names:
+                    combined_row = combined_row + str(item) + ':'
+                    home_counter += 1
+                else:
+                    try:
+                        score = int(item)
+                    except ValueError:
+                        break
+                    if 0 <= int(item) <= 100:
+                        if home_counter % 2 != 0:
+                            divider = ','
+                            combined_row = combined_row + str(item)
+                            individual_game.append(combined_row)
+                            combined_row = ''
+                        else:
+                            divider = ';'
+                            combined_row = combined_row + str(item)
+                            individual_game.append(combined_row)
+                            games_data.append(individual_game)
+                            individual_game = []
+                            combined_row = ''
+        combined_row = combined_row[1:]
+        # use read games.csv into a list here
+        # already have games_read as a list
+        games_output = games_read[1:]
+        spread_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_spread.csv"
+        over_under_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_over_under.csv"
+        for game in games_data:
+            home_score = game[1].split(':')[1:]
+            home_team = game[1].split(':')[0]
+            visitor_score = game[0].split(':')[1:]
+            visitor_team = game[0].split(':')[0]
+            spread = int(home_score[0]) - int(visitor_score[0])
+            print(home_team + ' vs ' + visitor_team + ' spread: ' + str(spread))
+            over_under = int(home_score[0]) + int(visitor_score[0])
+            print(home_team + ' vs ' + visitor_team + ' over/under: ' + str(over_under))
+            # add spread and over_under to individual files that extend the games.csv file
+            # by searching for the game in the read in games.csv list
+            # search for game row
+            game_row_ = [game_spread for game_spread in games_output if home_team in game_spread]
+            with open(spread_file_name, "a") as spread_file:
+                    spread_file.write(game_row_[0] + ',' + str(spread) + '\n')
+            with open(over_under_file_name, "a") as over_under_file:
+                    over_under_file.write(game_row_[0] + ',' + str(over_under) + '\n')
 
 if __name__ == "__main__":
-    funct = 'games'
+    funct = ''
     if len(sys.argv) == 1:
         print("Usage: NFLGames.py teams|games|results week")
         my_nfl = NFL()
