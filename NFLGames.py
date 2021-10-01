@@ -19,8 +19,8 @@ class NFL(object):
         self.theFunction = theFunction
         self.theWeek = theWeek
         self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
-        self.home_manual_header = "Home Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
-        self.visitor_manual_header = "Visitor Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
+        self.home_manual_header = "Home_Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
+        self.visitor_manual_header = "Visitor_Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
 
     def setup(self):
         def def_value():
@@ -154,7 +154,7 @@ class NFL(object):
             # end get team conversions
             #
             # next normalize the data
-            # then write to training files (spread and over/under)
+            # then write to training files (spread and over_under)
             # self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
             file_name = "week_" + str(self.theWeek) + "_teams.csv"
             with open(file_name, "a") as teams_file:
@@ -279,7 +279,7 @@ class NFL(object):
             spread = int(home_score[0]) - int(visitor_score[0])
             print(home_team + ' vs ' + visitor_team + ' spread: ' + str(spread))
             over_under = int(home_score[0]) + int(visitor_score[0])
-            print(home_team + ' vs ' + visitor_team + ' over/under: ' + str(over_under))
+            print(home_team + ' vs ' + visitor_team + ' over_under: ' + str(over_under))
             # add spread and over_under to individual files that extend the games.csv file
             # by searching for the game in the read in games.csv list
             # search for game row
@@ -290,7 +290,7 @@ class NFL(object):
                 spread_file.write(game_row_[0] + ',' + str(spread) + '\n')
             with open(over_under_file_name, "a") as over_under_file:
                 if row_counter == 1:
-                    over_under_file.write(self.visitor_manual_header + ',' + self.home_manual_header + ',over/under' + '\n')
+                    over_under_file.write(self.visitor_manual_header + ',' + self.home_manual_header + ',over_under' + '\n')
                 over_under_file.write(game_row_[0] + ',' + str(over_under) + '\n')
             row_counter += 1
 
