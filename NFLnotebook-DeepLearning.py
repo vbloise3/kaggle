@@ -189,6 +189,15 @@ plt.xlim(lims)
 plt.ylim(lims)
 _ = plt.plot(lims, lims)
 
+error = test_predictions - test_labels
+plt.hist(error, bins=25)
+plt.xlabel('Prediction Error [over_under]')
+_ = plt.ylabel('Count')
+
+dnn_model.save('dnn_model')
+
+
+
 '''input_shape = [X_train_full.shape[1]]
 print("Input shape: {}".format(input_shape))
 # Define the model
