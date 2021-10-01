@@ -8,6 +8,10 @@ drive.mount('/content/drive')
 !ls "/content/drive/My Drive/NFL"
 !cp "/content/drive/My Drive/NFL/week_3_spread.csv" "week_3_over_under.csv"
 !cp "/content/drive/My Drive/NFL/week_4_games.csv" "week_4_games.csv"
+
+!cp "/content/drive/My Drive/NFL/allAtt_onehot_large_train.csv" "allAtt_onehot_large_train.csv"
+!cp "/content/drive/My Drive/NFL/allAtt_onehot_large_test.csv" "allAtt_onehot_large_test.csv"
+
 X_full = pd.read_csv("/content/drive/My Drive/NFL/week_3_over_under.csv")
 #dataTest = pd.read_csv("/content/drive/My Drive/NFL/week_4_games.csv")
 
@@ -27,10 +31,12 @@ print(dataTest.head())
 print(dataTest.shape)
 
 batch_size = 64
-input_dim = 97
+# Each MNIST image batch is a tensor of shape (batch_size, 28, 1).
+# Each input sequence will be of size (28, 1).
+input_dim = 28
 
 units = 64
-output_size = 1  # labels are from Win or Loss
+output_size = 2  # labels are from Win or Loss
 
 # Build the RNN model
 def build_model(allow_cudnn_kernel=True):
@@ -39,11 +45,11 @@ def build_model(allow_cudnn_kernel=True):
     # while RNN(LSTMCell(units)) will run on non-CuDNN kernel.
     if allow_cudnn_kernel:
         # The LSTM layer with default options uses CuDNN.
-        lstm_layer = keras.layers.LSTM(units, input_shape=(input_dim,0))
+        lstm_layer = keras.layers.LSTM(units, input_shape=(input_dim,1))
     else:
         # Wrapping a LSTMCell in a RNN layer will not use CuDNN.
         lstm_layer = keras.layers.RNN(
-            keras.layers.LSTMCell(units), input_shape=(input_dim,0)
+            keras.layers.LSTMCell(units), input_shape=(input_dim,1)
         )
     model = keras.models.Sequential(
         [
@@ -54,11 +60,10 @@ def build_model(allow_cudnn_kernel=True):
     )
     return model
 
-
-x_train, y_train = dataTrain.iloc[:,:97].values,dataTrain.iloc[:,97:].values
-x_train=np.reshape(x_train,(13,97,1))
-x_test, y_test = dataTest.iloc[:,:97].values,dataTest.iloc[:,97:].values
-x_test=np.reshape(x_test,(3,97,1))
+x_train, y_train = dataTrain.iloc[:,:28].values,dataTrain.iloc[:,28:].values
+x_train=np.reshape(x_train,(1860,28,1))
+x_test, y_test = dataTest.iloc[:,:28].values,dataTest.iloc[:,28:].values
+x_test=np.reshape(x_test,(800,28,1))
 
 model = build_model(allow_cudnn_kernel=True)
 
