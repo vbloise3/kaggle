@@ -270,6 +270,7 @@ class NFL(object):
         games_output = games_read[1:]
         spread_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_spread.csv"
         over_under_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_over_under.csv"
+        row_counter = 1
         for game in games_data:
             home_score = game[1].split(':')[1:]
             home_team = game[1].split(':')[0]
@@ -284,9 +285,14 @@ class NFL(object):
             # search for game row
             game_row_ = [game_spread for game_spread in games_output if home_team in game_spread]
             with open(spread_file_name, "a") as spread_file:
-                    spread_file.write(game_row_[0] + ',' + str(spread) + '\n')
+                if row_counter == 1:
+                    spread_file.write(self.visitor_manual_header + ',' + self.home_manual_header + ',spread' + '\n')
+                spread_file.write(game_row_[0] + ',' + str(spread) + '\n')
             with open(over_under_file_name, "a") as over_under_file:
-                    over_under_file.write(game_row_[0] + ',' + str(over_under) + '\n')
+                if row_counter == 1:
+                    over_under_file.write(self.visitor_manual_header + ',' + self.home_manual_header + ',over/under' + '\n')
+                over_under_file.write(game_row_[0] + ',' + str(over_under) + '\n')
+            row_counter += 1
 
 if __name__ == "__main__":
     funct = ''
