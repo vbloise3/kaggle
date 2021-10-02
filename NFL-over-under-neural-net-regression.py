@@ -8,7 +8,7 @@ from keras import layers
 #from keras import optimizers
 from tensorflow.keras import optimizers
 
-# Try adding both over under and spread as two predictions
+# over under predictions
 
 drive.mount('/content/drive')
 !ls "/content/drive/My Drive/NFL"
@@ -83,4 +83,4 @@ ax[1].set_ylabel('Loss', fontsize=16)
 ax[1].legend()
 
 # make predictions
-network.predict()
+network.predict(gamesPredict)

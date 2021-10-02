@@ -8,18 +8,18 @@ from keras import layers
 #from keras import optimizers
 from tensorflow.keras import optimizers
 
-# Try adding both over under and spread as two predictions
+# spread predictions
 
 drive.mount('/content/drive')
 !ls "/content/drive/My Drive/NFL"
-!cp "/content/drive/My Drive/NFL/week_3_spread.csv" "week_3_over_under.csv"
+!cp "/content/drive/My Drive/NFL/week_3_spread.csv" "week_3_spread.csv"
 !cp "/content/drive/My Drive/NFL/week_4_games.csv" "week_4_games.csv"
-NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_3_over_under.csv")
+NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_3_spread.csv")
 gamesPredict = pd.read_csv("/content/drive/My Drive/NFL/week_4_games.csv")
 
 X = NFLgames.copy()
-X.drop(['Home_Team', 'Visitor_Team', 'over_under'], axis=1, inplace=True)
-y = NFLgames.pop('over_under')
+X.drop(['Home_Team', 'Visitor_Team', 'spread'], axis=1, inplace=True)
+y = NFLgames.pop('spread')
 gamesPredict.drop(['Home_Team', 'Visitor_Team'], axis=1, inplace=True)
 
 print(X.head())
@@ -83,4 +83,4 @@ ax[1].set_ylabel('Loss', fontsize=16)
 ax[1].legend()
 
 # make predictions
-network.predict()
+network.predict(gamesPredict)
