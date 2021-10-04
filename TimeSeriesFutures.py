@@ -1,6 +1,18 @@
-pip install yfinance
+#!pip install yfinance
+from google.colab import drive
 import yfinance as yf
+import numpy as np # linear algebra
+import pandas as pd # data processing
+import matplotlib.pyplot as plt # data visualization
 df = yf.download('BTC-USD','2017-01-02','2019-11-16')
+
+drive.mount('/content/drive')
+!ls "/content/drive/My Drive/LSTM Futures"
+!cp "/content/drive/My Drive/LSTM Futures/micro_emini_nasdaq_historical.csv" "micro_emini_nasdaq_historical.csv"
+
+df=pd.read_csv("micro_emini_nasdaq_historical.csv")
+print('Number of rows and columns:', df.shape)
+df.head(5)
 
 import numpy as np # linear algebra
 import pandas as pd # data processing
@@ -31,7 +43,7 @@ register_matplotlib_converters()
 
 plt.figure(figsize=(8, 6))
 plt.plot(df_close, color='g')
-plt.title('Bitcoin Closing Price', weight='bold', fontsize=16)
+plt.title('Micro eMini NASDAQ Closing Price', weight='bold', fontsize=16)
 plt.xlabel('Time', weight='bold', fontsize=14)
 plt.ylabel('USD ($)', weight='bold', fontsize=14)
 plt.xticks(weight='bold', fontsize=12, rotation=45)
@@ -49,7 +61,7 @@ acf_djia, confint_djia, qstat_djia, pvalues_djia = stattools.acf(df_close,
 
 plt.figure(figsize=(7, 5))
 plt.plot(pd.Series(acf_djia), color='r', linewidth=2)
-plt.title('Autocorrelation of Bitcoin Closing Price', weight='bold', fontsize=16)
+plt.title('Autocorrelation of Micro eMini NASDAQ Closing Price', weight='bold', fontsize=16)
 plt.xlabel('Lag', weight='bold', fontsize=14)
 plt.ylabel('Value', weight='bold', fontsize=14)
 plt.xticks(weight='bold', fontsize=12, rotation=45)
@@ -177,7 +189,7 @@ plt.plot(y_actual, linestyle='solid', color='r')
 plt.plot(y_hat, linestyle='dashed', color='b')
 
 plt.legend(['Actual','Predicted'], loc='best', prop={'size': 14})
-plt.title('Bitcoin Stock Closing Prices', weight='bold', fontsize=16)
+plt.title('Micro eMini NASDAQ Futures Closing Prices', weight='bold', fontsize=16)
 plt.ylabel('USD ($)', weight='bold', fontsize=14)
 plt.xlabel('Test Set Day no.', weight='bold', fontsize=14)
 plt.xticks(weight='bold', fontsize=12, rotation=45)
