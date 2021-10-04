@@ -8,9 +8,9 @@ df = yf.download('BTC-USD','2017-01-02','2019-11-16')
 
 drive.mount('/content/drive')
 !ls "/content/drive/My Drive/LSTM Futures"
-!cp "/content/drive/My Drive/LSTM Futures/micro_emini_nasdaq_historical.csv" "micro_emini_nasdaq_historical.csv"
+!cp "/content/drive/My Drive/LSTM Futures/reversed_micro_emini_nasdaq_historical.csv" "reversed_micro_emini_nasdaq_historical.csv"
 
-df=pd.read_csv("micro_emini_nasdaq_historical.csv")
+df=pd.read_csv("reversed_micro_emini_nasdaq_historical.csv")
 print('Number of rows and columns:', df.shape)
 df.head(5)
 
@@ -26,7 +26,7 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
 df.head()
 # Use eMinni NASDAQ or eMini S&P 500 here instaed
 """
-	        Open	    High	    Low	        Close	    Adj Close	Volume
+	        Open	    High	    Low	        Close	    Adj_Close	Volume
 Date						
 2017-01-02	998.617004	1031.390015	996.702026	1021.750000	1021.750000	222184992
 2017-01-03	1021.599976	1044.079956	1021.599976	1043.839966	1043.839966	185168000
@@ -118,7 +118,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-input_layer = Input(shape=(15), dtype='float32')
+input_layer = Input(shape=(16), dtype='float32')
 dense1 = Dense(60, activation='linear')(input_layer)
 dense2 = Dense(60, activation='linear')(dense1)
 dropout_layer = Dropout(0.2)(dense2)
@@ -136,20 +136,24 @@ valid_set_size= 0.05
 
 df_copy = df_new.reset_index(drop=True)
 
+# Replace df_test with tomorrow's morning numbers
 df_test = df_copy.iloc[ int(np.floor(len(df_copy)*(1-test_set_size))) : ]
+#df_test = df_copy.iloc[250:251]
 df_train_plus_valid = df_copy.iloc[ : int(np.floor(len(df_copy)*(1-test_set_size))) ]
 
 df_train = df_train_plus_valid.iloc[ : int(np.floor(len(df_train_plus_valid)*(1-valid_set_size))) ]
 df_valid = df_train_plus_valid.iloc[ int(np.floor(len(df_train_plus_valid)*(1-valid_set_size))) : ]
 
 
-X_train, y_train = df_train.iloc[:, 1:], df_train.iloc[:, 0]
-X_valid, y_valid = df_valid.iloc[:, 1:], df_valid.iloc[:, 0]
-X_test, y_test = df_test.iloc[:, 1:], df_test.iloc[:, 0]
+X_train, y_train = df_train.iloc[:, 0:], df_train.iloc[:, 0]
+X_valid, y_valid = df_valid.iloc[:, 0:], df_valid.iloc[:, 0]
+X_test, y_test = df_test.iloc[:, 0:], df_test.iloc[:, 0]
 
 print('Shape of training inputs, training target:', X_train.shape, y_train.shape)
 print('Shape of validation inputs, validation target:', X_valid.shape, y_valid.shape)
 print('Shape of test inputs, test target:', X_test.shape, y_test.shape)
+
+print(X_test)
 
 # Scaling the data
 from sklearn.preprocessing import MinMaxScaler
@@ -172,6 +176,7 @@ model.fit(x=X_train_scaled, y=y_train_scaled, batch_size=5, epochs=30, verbose=1
 y_pred = model.predict(X_test_scaled)
 # the predictions also lie in that range. We need to scale them back in the other direction
 y_pred_rescaled = Target_scaler.inverse_transform(y_pred)
+print(y_pred_rescaled)
 
 # Checking the r2 score
 from sklearn.metrics import r2_score
