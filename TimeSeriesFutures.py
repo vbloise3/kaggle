@@ -118,7 +118,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-input_layer = Input(shape=(15), dtype='float32')
+input_layer = Input(shape=(16), dtype='float32')
 dense1 = Dense(60, activation='linear')(input_layer)
 dense2 = Dense(60, activation='linear')(dense1)
 dropout_layer = Dropout(0.2)(dense2)
@@ -136,7 +136,7 @@ valid_set_size= 0.05
 
 df_copy = df_new.reset_index(drop=True)
 
-# Using last 16 days of data
+# Using last 16 days
 df_test = df_copy.iloc[ int(np.floor(len(df_copy)*(1-test_set_size))) : ]
 
 df_train_plus_valid = df_copy.iloc[ : int(np.floor(len(df_copy)*(1-test_set_size))) ]
@@ -145,9 +145,9 @@ df_train = df_train_plus_valid.iloc[ : int(np.floor(len(df_train_plus_valid)*(1-
 df_valid = df_train_plus_valid.iloc[ int(np.floor(len(df_train_plus_valid)*(1-valid_set_size))) : ]
 
 
-X_train, y_train = df_train.iloc[:, 1:], df_train.iloc[:, 0]
-X_valid, y_valid = df_valid.iloc[:, 1:], df_valid.iloc[:, 0]
-X_test, y_test = df_test.iloc[:, 1:], df_test.iloc[:, 0]
+X_train, y_train = df_train.iloc[:, 0:], df_train.iloc[:, 0]
+X_valid, y_valid = df_valid.iloc[:, 0:], df_valid.iloc[:, 0]
+X_test, y_test = df_test.iloc[:, 0:], df_test.iloc[:, 0]
 
 print('Shape of training inputs, training target:', X_train.shape, y_train.shape)
 print('Shape of validation inputs, validation target:', X_valid.shape, y_valid.shape)
