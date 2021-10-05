@@ -136,9 +136,9 @@ valid_set_size= 0.05
 
 df_copy = df_new.reset_index(drop=True)
 
-# Replace df_test with tomorrow's morning numbers
+# Using last 16 days of data
 df_test = df_copy.iloc[ int(np.floor(len(df_copy)*(1-test_set_size))) : ]
-#df_test = df_copy.iloc[250:251]
+
 df_train_plus_valid = df_copy.iloc[ : int(np.floor(len(df_copy)*(1-test_set_size))) ]
 
 df_train = df_train_plus_valid.iloc[ : int(np.floor(len(df_train_plus_valid)*(1-valid_set_size))) ]
