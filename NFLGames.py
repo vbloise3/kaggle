@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 class NFL(object):
-    def __init__(self, theFunction = 'games', theWeek = 3):
+    def __init__(self, theFunction = 'games', theWeek = 5):
         self.theFunction = theFunction
         self.theWeek = theWeek
         self.manual_header = "Team,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,PF,Yds,TO,FL,1stD,PAtt,PYds,PTD,PInt,PNY/A,RAtt,RYds,RTD,RY/A,Sc%,TO%,AvDrvStart,AveDrvTime,AveDrvPlays,AveDriveYds,AveDrivePts,3D%,4D%,RZ%,3D%,4D%,RZ%"
@@ -218,6 +218,47 @@ class NFL(object):
                         games_file.write(self.visitor_manual_header + ',' + self.home_manual_header + '\n')
                     games_file.write(game_row + '\n')
             team_counter += 1
+    def combinedGameResults(self):
+        # spread
+        # read in last week's results
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_spread.csv"
+        with open(results_file_name) as data_file:
+            last_weeks_rows_read = [row.rstrip() for row in data_file]
+        # append this week's results to last weeks results
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_spread.csv"
+        with open(results_file_name) as data_file:
+            this_weeks_rows_read = [row.rstrip() for row in data_file]
+        # write out combined results
+        write_file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_spread_combined.csv"
+        with open(write_file_path, "a") as combined_file:
+            for row in last_weeks_rows_read:
+                combined_file.write(row + '\n')
+        with open(write_file_path, "a") as combined_file:
+            counter_rows = 0
+            for row in this_weeks_rows_read:
+                if counter_rows != 0:
+                    combined_file.write(row + '\n')
+                counter_rows += 1
+        # over under
+        # read in last week's results
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_over_under.csv"
+        with open(results_file_name) as data_file:
+            last_weeks_rows_read = [row.rstrip() for row in data_file]
+        # append this week's results to last weeks results
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_over_under.csv"
+        with open(results_file_name) as data_file:
+            this_weeks_rows_read = [row.rstrip() for row in data_file]
+        # write out combined results
+        write_file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_over_under_combined.csv"
+        with open(write_file_path, "a") as combined_file:
+            for row in last_weeks_rows_read:
+                combined_file.write(row + '\n')
+        with open(write_file_path, "a") as combined_file:
+            counter_rows = 0
+            for row in this_weeks_rows_read:
+                if counter_rows != 0:
+                    combined_file.write(row + '\n')
+                counter_rows += 1
     def gameResults(self):
         read_file_path = "../NFL_Model/week_" + str(self.theWeek) + "/week_" + str(self.theWeek) + "_games.csv"
         read_file_name = "week_" + str(self.theWeek) + "_games.csv"
@@ -312,3 +353,5 @@ if __name__ == "__main__":
         my_nfl.createGames()
     elif funct == "results":
         my_nfl.gameResults()
+    elif funct == "combine_results":
+        my_nfl.combinedGameResults()
