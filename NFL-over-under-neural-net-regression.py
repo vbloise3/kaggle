@@ -8,14 +8,14 @@ from keras import layers
 #from keras import optimizers
 from tensorflow.keras import optimizers
 
-# over under predictions
+# spread predictions
 
 drive.mount('/content/drive')
-!ls "/content/drive/My Drive/NFL"
-!cp "/content/drive/My Drive/NFL/week_3_spread.csv" "week_3_over_under.csv"
-!cp "/content/drive/My Drive/NFL/week_4_games.csv" "week_4_games.csv"
-NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_3_over_under.csv")
-gamesPredict = pd.read_csv("/content/drive/My Drive/NFL/week_4_games.csv")
+#!ls "/content/drive/My Drive/NFL"
+!cp "/content/drive/My Drive/NFL/week_4_over_under_combined.csv" "week_4_over_under_combined.csv"
+!cp "/content/drive/My Drive/NFL/week_5_games.csv" "week_5_games.csv"
+NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_4_over_under_combined.csv")
+gamesPredict = pd.read_csv("/content/drive/My Drive/NFL/week_5_games.csv")
 
 X = NFLgames.copy()
 X.drop(['Home_Team', 'Visitor_Team', 'over_under'], axis=1, inplace=True)

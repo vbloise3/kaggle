@@ -11,11 +11,11 @@ from tensorflow.keras import optimizers
 # spread predictions
 
 drive.mount('/content/drive')
-!ls "/content/drive/My Drive/NFL"
-!cp "/content/drive/My Drive/NFL/week_3_spread.csv" "week_3_spread.csv"
-!cp "/content/drive/My Drive/NFL/week_4_games.csv" "week_4_games.csv"
-NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_3_spread.csv")
-gamesPredict = pd.read_csv("/content/drive/My Drive/NFL/week_4_games.csv")
+#!ls "/content/drive/My Drive/NFL"
+!cp "/content/drive/My Drive/NFL/week_4_spread_combined.csv" "week_4_spread_combined.csv"
+!cp "/content/drive/My Drive/NFL/week_5_games.csv" "week_5_games.csv"
+NFLgames = pd.read_csv("/content/drive/My Drive/NFL/week_4_spread_combined.csv")
+gamesPredict = pd.read_csv("/content/drive/My Drive/NFL/week_5_games.csv")
 
 X = NFLgames.copy()
 X.drop(['Home_Team', 'Visitor_Team', 'spread'], axis=1, inplace=True)
