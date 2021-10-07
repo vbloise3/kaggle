@@ -240,7 +240,7 @@ class NFL(object):
                     combined_file.write(row + '\n')
                 counter_rows += 1
         # over under
-        # read in last week's results
+        # read in last week's results, make sure the files are named correctly
         results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_over_under.csv"
         with open(results_file_name) as data_file:
             last_weeks_rows_read = [row.rstrip() for row in data_file]
