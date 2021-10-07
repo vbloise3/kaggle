@@ -4,7 +4,6 @@ import yfinance as yf
 import numpy as np # linear algebra
 import pandas as pd # data processing
 import matplotlib.pyplot as plt # data visualization
-df = yf.download('BTC-USD','2017-01-02','2019-11-16')
 
 drive.mount('/content/drive')
 !ls "/content/drive/My Drive/LSTM Futures"
@@ -24,7 +23,7 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
         print(os.path.join(dirname, filename))
 
 df.head()
-# Use eMinni NASDAQ or eMini S&P 500 here instaed
+
 """
 	        Open	    High	    Low	        Close	    Adj_Close	Volume
 Date						
