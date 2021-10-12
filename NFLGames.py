@@ -221,7 +221,7 @@ class NFL(object):
     def combinedGameResults(self):
         # spread
         # read in last week's results
-        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_spread.csv"
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_spread_combined.csv"
         with open(results_file_name) as data_file:
             last_weeks_rows_read = [row.rstrip() for row in data_file]
         # append this week's results to last weeks results
@@ -241,7 +241,7 @@ class NFL(object):
                 counter_rows += 1
         # over under
         # read in last week's results, make sure the files are named correctly
-        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_over_under.csv"
+        results_file_name = "../NFL_Model/week_" + str(self.theWeek - 1) + "/week_" + str(self.theWeek - 1) + "_over_under_combined.csv"
         with open(results_file_name) as data_file:
             last_weeks_rows_read = [row.rstrip() for row in data_file]
         # append this week's results to last weeks results
