@@ -338,7 +338,7 @@ class NFL(object):
 if __name__ == "__main__":
     funct = ''
     if len(sys.argv) == 1:
-        print("Usage: NFLGames.py teams|games|results week")
+        print("Usage: NFLGames.py week teams|games|results")
         my_nfl = NFL()
     elif len(sys.argv) > 2:
         week = int(sys.argv[1])
