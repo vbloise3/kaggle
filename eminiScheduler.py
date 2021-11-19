@@ -117,9 +117,10 @@ def upload_to_iCloud(command):
     elif command == 'read_daily_granular':
         drive_file = api.drive['Futures']['daily-granular.csv']
         print(drive_file.open().content.decode('ascii'))
-        # now write it to a local file
-        with open('downloaded_emini.csv', 'w') as f:
+        # now write it to the local file called daily-granular.csv
+        with open('daily-granular.csv', 'w') as f:
             f.write(drive_file.open().content.decode('ascii'))
+        # next upload daily-granular.csv to the Google drive My Drive/LSTM Futures
     return True
 
 # thedata = getData()
