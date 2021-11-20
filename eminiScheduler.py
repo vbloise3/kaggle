@@ -8,6 +8,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from pyicloud import PyiCloudService
 from shutil import copyfileobj
+import requests
 
 # Import data manipulation modules
 import pandas as pd
@@ -121,6 +122,13 @@ def upload_to_iCloud(command):
         with open('daily-granular.csv', 'w') as f:
             f.write(drive_file.open().content.decode('ascii'))
         # next upload daily-granular.csv to the Google drive My Drive/LSTM Futures
+    elif command == "get_ticks":
+        # use TradeStation API
+        url = "https://api.tradestation.com/v3/marketdata/barcharts/MSFT?unit=minute"
+        headers = {"Authorization": "Bearer TOKEN"}
+        response = requests.request("GET", url, headers=headers)
+        print(response.text)
+        # parse JSON for Open, High, Low, Close, TotalVolume
     return True
 
 # thedata = getData()
