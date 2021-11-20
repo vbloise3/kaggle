@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # Import scraping modules
+from __future__ import print_function
 import string
 import sys
 import os
@@ -9,6 +10,15 @@ from bs4 import BeautifulSoup
 from pyicloud import PyiCloudService
 from shutil import copyfileobj
 import requests
+import json
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from apiclient import discovery, errors
+from httplib2 import Http
+from oauth2client import client, file, tools
 
 # Import data manipulation modules
 import pandas as pd
@@ -21,6 +31,20 @@ import schedule
 from datetime import datetime
 days_of_the_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+### use API to connect to iCloud
+iCloudId = os.environ['ID']
+iCloudPw = os.environ['PW']
+api = PyiCloudService(iCloudId, iCloudPw)
+iPhone = api.devices[3]
+###
+### Google Drive stuff
+# define variables
+credentials_file_path = 'credentials.json'
+clientsecret_file_path = 'client_secret.json'
+
+# define scope
+SCOPE = 'https://www.googleapis.com/auth/drive'
+###
 def runIt():
     file_name = "/Users/vincentbloise/kaggle/automated_daily_granular.csv"
     with open(file_name, "a") as emini_file:
@@ -43,7 +67,7 @@ def runIt():
             if now.hour == 14 and now.minute == 20 and now.second == 50:
                 # emini_file.write(now.strftime("%m/%d/%Y") + "," + "6:00," + 'test @ 6:00' + '\n')
                 # upload daily-granular.csv from the iCloud drive
-                if upload_to_iCloud():
+                if upload_to_iCloud('read_daily_granular'):
                     print("uploaded")
 
 def getData():
@@ -61,7 +85,7 @@ def getData():
     #emini_data.append([col.getText() for col in data_row.findAll('td')])
     return emini_data
 
-def upload_to_iCloud(command):
+def connect_iCloud():
     # connect to iCloud
     iCloudId = os.environ['ID']
     iCloudPw = os.environ['PW']
@@ -101,6 +125,9 @@ def upload_to_iCloud(command):
     iPhone = api.devices[3]
     appleWatch = api.devices[2]
     macMini = api.devices[0]
+
+def upload_to_iCloud(command):
+    connect_iCloud()
     if command == 'find_phone':
         print("phone location: " + str(iPhone.status()))
     elif command == 'play_sound':
@@ -116,20 +143,58 @@ def upload_to_iCloud(command):
                 copyfileobj(response.raw, file_out)
         print(file_out.name)
     elif command == 'read_daily_granular':
-        drive_file = api.drive['Futures']['daily-granular.csv']
-        print(drive_file.open().content.decode('ascii'))
-        # now write it to the local file called daily-granular.csv
-        with open('daily-granular.csv', 'w') as f:
-            f.write(drive_file.open().content.decode('ascii'))
-        # next upload daily-granular.csv to the Google drive My Drive/LSTM Futures
+        push_emini_data_to_Drive()
     elif command == "get_ticks":
         # use TradeStation API
-        url = "https://api.tradestation.com/v3/marketdata/barcharts/MSFT?unit=minute"
-        headers = {"Authorization": "Bearer TOKEN"}
-        response = requests.request("GET", url, headers=headers)
-        print(response.text)
+        print(trade_station_API())
         # parse JSON for Open, High, Low, Close, TotalVolume
     return True
+
+def push_emini_data_to_Drive():
+    connect_iCloud()
+    drive_file = api.drive['Futures']['daily-granular.csv']
+    print(drive_file.open().content.decode('ascii'))
+    # now write it to the local file called daily-granular.csv
+    with open('daily-granular.csv', 'w') as f:
+        f.write(drive_file.open().content.decode('ascii'))
+    # next upload daily-granular.csv to the Google drive My Drive/LSTM Futures
+    # define store
+    store = file.Storage(credentials_file_path)
+    credentials = store.get()
+
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets(clientsecret_file_path, SCOPE)
+        credentials = tools.run_flow(flow, store)
+
+    # define API service
+    http = credentials.authorize(Http())
+    drive = discovery.build('drive', 'v3', http=http)
+
+
+    filedirectory = '/Users/vincentbloise/kaggle/daily-granular.csv'
+    filename = 'daily-granular.csv'
+    folderid = 'Futures'
+    access_token = credentials
+    metadata = {
+        "name": filename,
+        "parents": [folderid]
+    }
+    files = {
+        'data': ('metadata', json.dumps(metadata), 'application/json'),
+        'file': open(filedirectory, "rb").read()  # or  open(filedirectory, "rb")
+    }
+    r = requests.post(
+        "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+        headers={"Authorization": "Bearer " + access_token},
+        files=files
+    )
+    print(r.text)
+
+def trade_station_API():
+    url = "https://api.tradestation.com/v3/marketdata/barcharts/MSFT?unit=minute"
+    headers = {"Authorization": "Bearer TOKEN"}
+    response = requests.request("GET", url, headers=headers)
+    return response.text
 
 # thedata = getData()
 
