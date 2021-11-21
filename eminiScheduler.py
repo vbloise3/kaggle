@@ -33,7 +33,7 @@ from collections import defaultdict
 import schedule
 from datetime import datetime
 days_of_the_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']
+weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 ### use API to connect to iCloud
 iCloudId = os.environ['ID']
 iCloudPw = os.environ['PW']
