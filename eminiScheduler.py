@@ -19,6 +19,9 @@ from google.oauth2.credentials import Credentials
 from apiclient import discovery, errors
 from httplib2 import Http
 from oauth2client import client, file, tools
+import logging
+import boto3
+from botocore.exceptions import ClientError
 
 # Import data manipulation modules
 import pandas as pd
@@ -30,7 +33,7 @@ from collections import defaultdict
 import schedule
 from datetime import datetime
 days_of_the_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']
 ### use API to connect to iCloud
 iCloudId = os.environ['ID']
 iCloudPw = os.environ['PW']
@@ -41,8 +44,9 @@ iPhone = api.devices[3]
 # define variables
 credentials_file_path = 'credentials.json'
 clientsecret_file_path = 'client_secret.json'
-
-# define scope
+# get SNS client
+SNSclient = boto3.client("sns")
+# define Google Drive scope
 SCOPE = 'https://www.googleapis.com/auth/drive'
 ###
 def runIt():
@@ -52,7 +56,9 @@ def runIt():
         day_of_week = now.weekday()
         what = days_of_the_week[day_of_week]
         if days_of_the_week[day_of_week] in weekdays:
+            '''
             if now.hour == 9 and now.minute == 0 and now.second == 50:
+                # call trade_station_API() in each of these to get tick data
                 emini_file.write(now.strftime("%m/%d/%Y") + "," + "9:00," + 'test @ 9:00' + '\n')
             if now.hour == 9 and now.minute == 30 and now.second == 50:
                 emini_file.write(now.strftime("%m/%d/%Y") + "," + "9:30," + 'test @ 9:30' + '\n')
@@ -64,10 +70,10 @@ def runIt():
                 emini_file.write(now.strftime("%m/%d/%Y") + "," + "11:00," + 'test @ 11:00' + '\n')
             if now.hour == 18 and now.minute == 0 and now.second == 50:
                 emini_file.write(now.strftime("%m/%d/%Y") + "," + "6:00," + 'test @ 6:00' + '\n')
-            if now.hour == 14 and now.minute == 20 and now.second == 50:
-                # emini_file.write(now.strftime("%m/%d/%Y") + "," + "6:00," + 'test @ 6:00' + '\n')
+            '''
+            if now.hour == 15 and now.minute == 6 and now.second == 50:
                 # upload daily-granular.csv from the iCloud drive
-                if upload_to_iCloud('read_daily_granular'):
+                if upload_to_iCloud('read_daily_granular_automated'):
                     print("uploaded")
 
 def getData():
@@ -136,14 +142,15 @@ def upload_to_iCloud(command):
         print(api.drive.dir())
     elif command == 'get_Futures_files':
         print(api.drive['Futures'].dir())
-    elif command == 'read_daily_granular_old':
+    elif command == 'read_daily_granular_automated':
         drive_file = api.drive['Futures']['daily-granular.csv']
         with drive_file.open(stream=True) as response:
             with open(drive_file.name, 'wb') as file_out:
                 copyfileobj(response.raw, file_out)
         print(file_out.name)
+        push_emini_data_to_S3('daily-granular.csv', 'eminisp500vbloise')
     elif command == 'read_daily_granular':
-        push_emini_data_to_Drive()
+        push_emini_data_to_S3('daily-granular.csv', 'eminisp500vbloise')
     elif command == "get_ticks":
         # use TradeStation API
         print(trade_station_API())
@@ -170,7 +177,6 @@ def push_emini_data_to_Drive():
     http = credentials.authorize(Http())
     drive = discovery.build('drive', 'v3', http=http)
 
-
     filedirectory = '/Users/vincentbloise/kaggle/daily-granular.csv'
     filename = 'daily-granular.csv'
     folderid = 'Futures'
@@ -190,6 +196,23 @@ def push_emini_data_to_Drive():
     )
     print(r.text)
 
+def push_emini_data_to_S3(file_name, bucket, object_name=None):
+    phoneNumber = os.environ['PN']
+    topic_arn = 'arn:aws:sns:us-east-1:001178231653:emini'
+    theMessage= 'daily-granular.csv uploaded to S3'
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+    # Upload the file
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket, object_name)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    SNSclient.publish(Message=theMessage, TopicArn=topic_arn)
+    print('daily-granular.csv uploaded to S3')
+    return True
+
 def trade_station_API():
     url = "https://api.tradestation.com/v3/marketdata/barcharts/MSFT?unit=minute"
     headers = {"Authorization": "Bearer TOKEN"}
@@ -202,13 +225,14 @@ def trade_station_API():
 #    print("successful iCloud API call")
 
 ###### scheduler code
-'''
-schedule.every(1).seconds.do(runIt)
- 
-while True:
-    schedule.run_pending()
-'''
+def runTimeLoop():
+    schedule.every(1).seconds.do(runIt)
+    
+    while True:
+        schedule.run_pending()
+
 if __name__ == "__main__":
     command = sys.argv[1]
     print(command)
-    upload_to_iCloud(command)
+    # upload_to_iCloud(command)
+    runTimeLoop()
