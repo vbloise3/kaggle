@@ -71,7 +71,7 @@ def runIt():
             if now.hour == 18 and now.minute == 0 and now.second == 50:
                 emini_file.write(now.strftime("%m/%d/%Y") + "," + "6:00," + 'test @ 6:00' + '\n')
             '''
-            if now.hour == 15 and now.minute == 6 and now.second == 50:
+            if now.hour == 11 and now.minute == 15 and now.second == 50:
                 # upload daily-granular.csv from the iCloud drive
                 if upload_to_iCloud('read_daily_granular_automated'):
                     print("uploaded")
