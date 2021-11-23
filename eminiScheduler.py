@@ -22,6 +22,8 @@ from oauth2client import client, file, tools
 import logging
 import boto3
 from botocore.exceptions import ClientError
+import numpy as np
+import pandas as pd
 
 # Import data manipulation modules
 import pandas as pd
@@ -219,20 +221,47 @@ def trade_station_API():
     response = requests.request("GET", url, headers=headers)
     return response.text
 
+def convert_15_minute_ticks():
+    theFeature = []
+    in_file_name = "calc-daily-granular-15.csv"
+    eminiSPticks = pd.read_csv(in_file_name)
+    # calculate the 5 differences here
+    eminiCalculatedTicks = eminiSPticks.copy()
+    eminiCalculatedTicks['open-1'] = eminiSPticks['open-2'] -  eminiSPticks['open-1']
+    eminiCalculatedTicks['high-1'] = eminiSPticks['high-2'] -  eminiSPticks['high-1']
+    eminiCalculatedTicks['low-1'] = eminiSPticks['low-2'] -  eminiSPticks['low-1']
+    eminiCalculatedTicks['close-1'] = eminiSPticks['close-2'] -  eminiSPticks['close-1']
+    eminiCalculatedTicks['volume-1'] = eminiSPticks['volume-2'] -  eminiSPticks['volume-1']
+    #eminiSPticks.drop(['date-1', 'time-1', 'time-2', 'time-3', 'time-4', 'time-5', 'time-6', 'time-7', 'time-8', 'time-9', 'time-10', 'time-11', 'time-12', 'time-13'], axis=1, inplace=True)
+    theFeature.append(''.join(str(e) for e in eminiSPticks['date-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-1'].values))
+    print(','.join(map(str, theFeature)))
+    #theFeature = 
+    #out_file_name = "daily-granular-15.csv"
+    #with open(out_file_name, "a") as ticks_transformed_file:
+    #    ticks_transformed_file.write(theFeature)
+
 # thedata = getData()
 
 #if upload_to_iCloud():
 #    print("successful iCloud API call")
 
 ###### scheduler code
+'''
 def runTimeLoop():
     schedule.every(1).seconds.do(runIt)
     
     while True:
         schedule.run_pending()
-
+'''
 if __name__ == "__main__":
     command = sys.argv[1]
     print(command)
     # upload_to_iCloud(command)
-    runTimeLoop()
+    # runTimeLoop()
+    convert_15_minute_ticks()
