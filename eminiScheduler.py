@@ -232,6 +232,72 @@ def convert_15_minute_ticks():
     eminiCalculatedTicks['low-1'] = eminiSPticks['low-2'] -  eminiSPticks['low-1']
     eminiCalculatedTicks['close-1'] = eminiSPticks['close-2'] -  eminiSPticks['close-1']
     eminiCalculatedTicks['volume-1'] = eminiSPticks['volume-2'] -  eminiSPticks['volume-1']
+    ##########
+    eminiCalculatedTicks['open-2'] = eminiSPticks['open-3'] -  eminiSPticks['open-2']
+    eminiCalculatedTicks['high-2'] = eminiSPticks['high-3'] -  eminiSPticks['high-2']
+    eminiCalculatedTicks['low-2'] = eminiSPticks['low-3'] -  eminiSPticks['low-2']
+    eminiCalculatedTicks['close-2'] = eminiSPticks['close-3'] -  eminiSPticks['close-2']
+    eminiCalculatedTicks['volume-2'] = eminiSPticks['volume-3'] -  eminiSPticks['volume-2']
+    ##########
+    eminiCalculatedTicks['open-3'] = eminiSPticks['open-4'] -  eminiSPticks['open-3']
+    eminiCalculatedTicks['high-3'] = eminiSPticks['high-4'] -  eminiSPticks['high-3']
+    eminiCalculatedTicks['low-3'] = eminiSPticks['low-4'] -  eminiSPticks['low-3']
+    eminiCalculatedTicks['close-3'] = eminiSPticks['close-4'] -  eminiSPticks['close-3']
+    eminiCalculatedTicks['volume-3'] = eminiSPticks['volume-4'] -  eminiSPticks['volume-3']
+    ##########
+    eminiCalculatedTicks['open-4'] = eminiSPticks['open-5'] -  eminiSPticks['open-4']
+    eminiCalculatedTicks['high-4'] = eminiSPticks['high-5'] -  eminiSPticks['high-4']
+    eminiCalculatedTicks['low-4'] = eminiSPticks['low-5'] -  eminiSPticks['low-4']
+    eminiCalculatedTicks['close-4'] = eminiSPticks['close-5'] -  eminiSPticks['close-4']
+    eminiCalculatedTicks['volume-4'] = eminiSPticks['volume-5'] -  eminiSPticks['volume-4']
+    ##########
+    eminiCalculatedTicks['open-5'] = eminiSPticks['open-6'] -  eminiSPticks['open-5']
+    eminiCalculatedTicks['high-5'] = eminiSPticks['high-6'] -  eminiSPticks['high-5']
+    eminiCalculatedTicks['low-5'] = eminiSPticks['low-6'] -  eminiSPticks['low-5']
+    eminiCalculatedTicks['close-5'] = eminiSPticks['close-6'] -  eminiSPticks['close-5']
+    eminiCalculatedTicks['volume-5'] = eminiSPticks['volume-6'] -  eminiSPticks['volume-5']
+    ##########
+    eminiCalculatedTicks['open-6'] = eminiSPticks['open-7'] -  eminiSPticks['open-6']
+    eminiCalculatedTicks['high-6'] = eminiSPticks['high-7'] -  eminiSPticks['high-6']
+    eminiCalculatedTicks['low-6'] = eminiSPticks['low-7'] -  eminiSPticks['low-6']
+    eminiCalculatedTicks['close-6'] = eminiSPticks['close-7'] -  eminiSPticks['close-6']
+    eminiCalculatedTicks['volume-6'] = eminiSPticks['volume-7'] -  eminiSPticks['volume-6']
+    ##########
+    eminiCalculatedTicks['open-7'] = eminiSPticks['open-8'] -  eminiSPticks['open-7']
+    eminiCalculatedTicks['high-7'] = eminiSPticks['high-8'] -  eminiSPticks['high-7']
+    eminiCalculatedTicks['low-7'] = eminiSPticks['low-8'] -  eminiSPticks['low-7']
+    eminiCalculatedTicks['close-7'] = eminiSPticks['close-8'] -  eminiSPticks['close-7']
+    eminiCalculatedTicks['volume-7'] = eminiSPticks['volume-8'] -  eminiSPticks['volume-7']
+    ##########
+    eminiCalculatedTicks['open-8'] = eminiSPticks['open-9'] -  eminiSPticks['open-8']
+    eminiCalculatedTicks['high-8'] = eminiSPticks['high-9'] -  eminiSPticks['high-8']
+    eminiCalculatedTicks['low-8'] = eminiSPticks['low-9'] -  eminiSPticks['low-8']
+    eminiCalculatedTicks['close-8'] = eminiSPticks['close-9'] -  eminiSPticks['close-8']
+    eminiCalculatedTicks['volume-8'] = eminiSPticks['volume-9'] -  eminiSPticks['volume-8']
+    ##########
+    eminiCalculatedTicks['open-9'] = eminiSPticks['open-10'] -  eminiSPticks['open-9']
+    eminiCalculatedTicks['high-9'] = eminiSPticks['high-10'] -  eminiSPticks['high-9']
+    eminiCalculatedTicks['low-9'] = eminiSPticks['low-10'] -  eminiSPticks['low-9']
+    eminiCalculatedTicks['close-9'] = eminiSPticks['close-10'] -  eminiSPticks['close-9']
+    eminiCalculatedTicks['volume-9'] = eminiSPticks['volume-10'] -  eminiSPticks['volume-9']
+    ##########
+    eminiCalculatedTicks['open-10'] = eminiSPticks['open-11'] -  eminiSPticks['open-10']
+    eminiCalculatedTicks['high-10'] = eminiSPticks['high-11'] -  eminiSPticks['high-10']
+    eminiCalculatedTicks['low-10'] = eminiSPticks['low-11'] -  eminiSPticks['low-10']
+    eminiCalculatedTicks['close-10'] = eminiSPticks['close-11'] -  eminiSPticks['close-10']
+    eminiCalculatedTicks['volume-10'] = eminiSPticks['volume-11'] -  eminiSPticks['volume-10']
+    ##########
+    eminiCalculatedTicks['open-11'] = eminiSPticks['open-12'] -  eminiSPticks['open-11']
+    eminiCalculatedTicks['high-11'] = eminiSPticks['high-12'] -  eminiSPticks['high-11']
+    eminiCalculatedTicks['low-11'] = eminiSPticks['low-12'] -  eminiSPticks['low-11']
+    eminiCalculatedTicks['close-11'] = eminiSPticks['close-12'] -  eminiSPticks['close-11']
+    eminiCalculatedTicks['volume-11'] = eminiSPticks['volume-12'] -  eminiSPticks['volume-11']
+    ##########
+    eminiCalculatedTicks['open-12'] = eminiSPticks['open-13'] -  eminiSPticks['open-12']
+    eminiCalculatedTicks['high-12'] = eminiSPticks['high-13'] -  eminiSPticks['high-12']
+    eminiCalculatedTicks['low-12'] = eminiSPticks['low-13'] -  eminiSPticks['low-12']
+    eminiCalculatedTicks['close-12'] = eminiSPticks['close-13'] -  eminiSPticks['close-12']
+    eminiCalculatedTicks['volume-12'] = eminiSPticks['volume-13'] -  eminiSPticks['volume-12']
     #eminiSPticks.drop(['date-1', 'time-1', 'time-2', 'time-3', 'time-4', 'time-5', 'time-6', 'time-7', 'time-8', 'time-9', 'time-10', 'time-11', 'time-12', 'time-13'], axis=1, inplace=True)
     theFeature.append(''.join(str(e) for e in eminiSPticks['date-1'].values))
     theFeature.append(''.join(str(e) for e in eminiSPticks['time-1'].values))
@@ -240,11 +306,85 @@ def convert_15_minute_ticks():
     theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-1'].values))
     theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-1'].values))
     theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-1'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-2'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-3'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-4'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-5'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-6'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-7'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-8'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-9'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-10'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-11'].values))
+    theFeature.append(''.join(str(e) for e in eminiSPticks['time-12'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['open-12'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['high-12'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['low-12'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['close-12'].values))
+    theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-12'].values))
     print(','.join(map(str, theFeature)))
-    #theFeature = 
-    #out_file_name = "daily-granular-15.csv"
-    #with open(out_file_name, "a") as ticks_transformed_file:
-    #    ticks_transformed_file.write(theFeature)
+    theArticulatedFeature = ','.join(map(str, theFeature))
+
+    doing_historicals = False
+
+    if doing_historicals:
+        out_file_name = "15-Micro-Emini-SP500-MES-F-granular.csv"
+        with open(out_file_name, "a") as ticks_transformed_file:
+            ticks_transformed_file.write(theArticulatedFeature)
+    else:
+        daily_file_name = "daily-granular-15.csv"
+        with open(daily_file_name, "a") as ticks_transformed_daily_file:
+            ticks_transformed_daily_file.write(theArticulatedFeature)
 
 # thedata = getData()
 
