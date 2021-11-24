@@ -225,7 +225,7 @@ def convert_15_minute_ticks():
     theFeature = []
     in_file_name = "calc-daily-granular-15.csv"
     eminiSPticks = pd.read_csv(in_file_name)
-    # calculate the 5 differences here
+    # calculate the 5 differences here 
     eminiCalculatedTicks = eminiSPticks.copy()
     eminiCalculatedTicks['open-1'] = eminiSPticks['open-2'] -  eminiSPticks['open-1']
     eminiCalculatedTicks['high-1'] = eminiSPticks['high-2'] -  eminiSPticks['high-1']
