@@ -401,7 +401,12 @@ def runTimeLoop():
 '''
 if __name__ == "__main__":
     command = sys.argv[1]
+    if len(sys.argv) > 2:
+        argument = sys.argv[2]
     print(command)
     # upload_to_iCloud(command)
     # runTimeLoop()
-    convert_15_minute_ticks()
+    if command == 'convert_15_minute_ticks':
+        convert_15_minute_ticks()
+    if command == 'upload_to_iCloud':
+        upload_to_iCloud(argument)
