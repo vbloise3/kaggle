@@ -39,8 +39,8 @@ weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 ### use API to connect to iCloud
 iCloudId = os.environ['ID']
 iCloudPw = os.environ['PW']
-#api = PyiCloudService(iCloudId, iCloudPw)
-#iPhone = api.devices[3]
+api = PyiCloudService(iCloudId, iCloudPw)
+iPhone = api.devices[3]
 ###
 ### Google Drive stuff
 # define variables
