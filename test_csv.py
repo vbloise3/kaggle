@@ -53,7 +53,7 @@ x = df.to_string(header=False,
 vals = [','.join(ele.split()) for ele in x]
 for row in vals:
     print(str(row))
-df.to_csv('test_csv_file', sep=',', index=False, header=False)
+df.to_csv('XGed-15-Micro-Emini-SP500-MES-F-granular.csv', sep=',', index=False, header=False)
 #print(df.head())
 #X.to_csv(train_data_location, sep=',')
 #y.to_csv(test_data_location, sep=',')
