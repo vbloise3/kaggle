@@ -7,21 +7,21 @@ import os
 import shutil
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from pyicloud import PyiCloudService
+# from pyicloud import PyiCloudService
 from shutil import copyfileobj
 import requests
 import json
 import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from apiclient import discovery, errors
-from httplib2 import Http
-from oauth2client import client, file, tools
+#from googleapiclient.discovery import build
+#from google_auth_oauthlib.flow import InstalledAppFlow
+#from google.auth.transport.requests import Request
+#from google.oauth2.credentials import Credentials
+#from apiclient import discovery, errors
+#from httplib2 import Http
+#from oauth2client import client, file, tools
 import logging
 import boto3
-from botocore.exceptions import ClientError
+#from botocore.exceptions import ClientError
 import numpy as np
 import pandas as pd
 
@@ -32,13 +32,13 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from collections import defaultdict
-import schedule
+#import schedule
 from datetime import datetime
 days_of_the_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 ### use API to connect to iCloud
-iCloudId = os.environ['ID']
-iCloudPw = os.environ['PW']
+#iCloudId = os.environ['ID']
+#iCloudPw = os.environ['PW']
 #api = PyiCloudService(iCloudId, iCloudPw)
 #iPhone = api.devices[3]
 ###
@@ -47,7 +47,7 @@ iCloudPw = os.environ['PW']
 credentials_file_path = 'credentials.json'
 clientsecret_file_path = 'client_secret.json'
 # get SNS client
-SNSclient = boto3.client("sns")
+#SNSclient = boto3.client("sns")
 # define Google Drive scope
 SCOPE = 'https://www.googleapis.com/auth/drive'
 ###
@@ -374,6 +374,7 @@ def convert_15_minute_ticks():
     theFeature.append(''.join(str(e) for e in eminiCalculatedTicks['volume-12'].values))
     print(','.join(map(str, theFeature)))
     theArticulatedFeature = ','.join(map(str, theFeature))
+
     theHeader = 'date-1,time-1,open-1,high-1,low-1,close-1,volume-1,time-2,open-2,high-2,low-2,close-2,volume-2,time-3,open-3,high-3,low-3,close-3,volume-3,time-4,open-4,high-4,low-4,close-4,volume-4,time-5,open-5,high-5,low-5,close-5,volume-5,time-6,open-6,high-6,low-6,close-6,volume-6,time-7,open-7,high-7,low-7,close-7,volume-7,time-8,open-8,high-8,low-8,close-8,volume-8,time-9,open-9,high-9,low-9,close-9,volume-9,time-10,open-10,high-10,low-10,close-10,volume-10,time-11,open-11,high-11,low-11,close-11,volume-11,time-12,open-12,high-12,low-12,close-12,volume-12'
 
     doing_historicals = False
